@@ -1,0 +1,261 @@
+{
+  "nombre_usuario": "bandi.rica2",
+  "password": "cofcof123",
+  "hoster": {
+    "tipo": "local",
+    "nombre": "BandidasCabaret",
+    "direccion": "calle 20 #3000 x 53 y 51 Francisco Villas",
+    "latitud": "85119953147848",
+    "longitud": "-158979994527813",
+    "telefono": "9994135874",
+    "descripcion": "Club nocturno con bailes para adultos y bailes para adultos privado.",
+    "mesas": [
+      {
+        "numero_mesa": 1,
+        "numero_lugares": 4,
+        "tipo_mesa": "vip",
+        "ocupada": true
+      },
+      {
+        "numero_mesa": 2,
+        "numero_lugares": 4,
+        "tipo_mesa": "vip",
+        "ocupada": true
+      },
+      {
+        "numero_mesa": 3,
+        "numero_lugares": 4,
+        "tipo_mesa": "empresarial",
+        "ocupada": true
+      },
+      {
+        "numero_mesa": 4,
+        "numero_lugares": 8,
+        "tipo_mesa": "privada",
+        "ocupada": true
+      }
+    ],
+    "menu": {
+      "platillos": [
+        {
+          "nombre": "BoneLess",
+          "porcion": "500g",
+          "ingrediente": [
+            {
+              "nombre": "pollo"
+            },
+            {
+              "nombre": "salsa bbq"
+            },
+            {
+              "nombre": "picante"
+            },
+            {
+              "nombre": "arina"
+            },
+            {
+              "nombre": "sal"
+            },
+            {
+              "nombre": "pimienta"
+            }
+          ],
+          "precio": 250
+        },
+        {
+          "nombre": "Pizza (palermo)",
+          "porcion": "Grande (16pz)",
+          "ingrediente": [
+            {
+              "nombre": "champiñones"
+            },
+            {
+              "nombre": "oregano"
+            },
+            {
+              "nombre": "peperioni"
+            },
+            {
+              "nombre": "salami"
+            },
+            {
+              "nombre": "chile morron"
+            },
+            {
+              "nombre": "cebolla"
+            }
+          ],
+          "precio": 450 
+        }
+
+      ],
+      "snacks": [
+        {
+          "nombre": "Papas fritas",
+          "cantidad": "350g",
+          "precio": 140
+        },
+        {
+          "nombre": "Dedos de queso",
+          "cantidad": "10 pz",
+          "precio": 150
+        },
+        {
+          "nombre": "Nachos",
+          "cantidad": "350g",
+          "precio": 250
+        },
+        {
+          "nombre": "Chile relleno de queso",
+          "cantidad": "400g",
+          "precio": 150
+        }
+      ],
+      "combos": [
+        {
+          "nombre": "PaQueson",
+          "incluidos": [
+            {
+              "nombre": "Papas fritas",
+              "cantidad": "500g",
+              "precio": 140
+            },
+            {
+              "nombre": "Dedos de queso",
+              "cantidad": "10 pz",
+              "precio": 150
+            }
+          ],
+          "precio": 180
+        }
+      ],
+      "refrescos": [
+        {
+          "nombre": "Coca cola",
+          "cantidad": "600 ml",
+          "precio": 25
+        },
+        {
+          "nombre": "Pepsi",
+          "cantidad": "600 ml",
+          "precio": 25
+        }
+      ],
+      "naturales": [
+        {
+          "nombre": "Jugo naranja",
+          "cantidad": "500 ml",
+          "precio": 50
+        },
+        {
+          "nombre": "Horchata",
+          "cantidad": "500 ml",
+          "precio": 50
+        }
+      ],
+      "cervezas": [
+        {
+          "nombre": "Dos XX",
+          "cantidad": "350 ml",
+          "grado_alcohol": "4.5%",
+          "precio": 40
+        },
+        {
+          "nombre": "Tecate",
+          "cantidad": "335 ml",
+          "grado_alcohol": "4.5%",
+          "precio": 40
+        }
+      ],
+      "licores": [
+        {
+          "nombre": "Jack Daniels",
+          "cantidad": "750 ml",
+          "grado_alcohol": "35%",
+          "precio": "1500 MXN"
+        },
+        {
+          "nombre": "Vodka Absolut",
+          "cantidad": "750 ml",
+          "grado_alcohol": "40%",
+          "precio": "1200 MXN"
+        }
+      ],
+      "cocteles": [
+        {
+          "nombre": "Desarmador",
+          "licores": [
+            {
+              "nombre": "Vodka",
+              "cantidad": "750 ml",
+              "grado_alcohol": "40%",
+              "precio": "1200"
+            }
+          ],
+          "ingredientes": [
+            {
+              "nombre": "limon"
+            }
+          ],
+          "bebidas": [
+            {
+              "nombre": "jugo de naranja",
+              "cantidad": "500ml",
+              "precio": 50
+            }
+          ]
+        }
+      ],
+      "vinos": [
+        {
+          "nombre": "Casa Azul",
+          "year": "2000",
+          "grado_alcohol": "32%",
+          "precio": "3500"
+        }
+      ]
+    },
+    "meseros": [
+      {
+        "nombre": "Luis Arturo",
+        "edad": 25,
+        "disponibilidad": true,
+        "fecha_contratacion": "25/12/2003",
+        "numero_trabajador": 1556,
+        "horarios": [
+          {
+            "dia": "Lunes",
+            "horas": "22:00 - 6:00"
+          }
+ 
+        ],
+        "mesas": [
+      {
+        "numero_mesa": 1,
+        "numero_lugares": 4,
+        "tipo_mesa": "vip",
+        "ocupada": true
+      },
+      {
+        "numero_mesa": 2,
+        "numero_lugares": 4,
+        "tipo_mesa": "vip",
+        "ocupada": true
+      }
+        ]
+      }
+    ],
+    "horarios": [
+      {
+        "dia": "Lunes - Domingo",
+        "horas": "22:00 - 6:00"
+      }
+    ],
+    "fotos_establecimiento": [
+      {
+        "file_name": "foto 1",
+        "location": "c:/recursos/locales/bandi.rica2/foto1.jpg"
+      }
+    ]
+  }
+}
