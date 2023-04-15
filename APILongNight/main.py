@@ -193,9 +193,20 @@ async def post_reserva_client(user_name: str, reservasion: reserva):
         return JSONResponse(status_code=500, content={"Message": "Internal server error!"})
 
 @app.delete('cliente/{user_name}/reserva/edit')
-async def edit_client_reservation(user_name: str):
+async def edit_client_reservation(user_name: str, data:reserva):
     try:
         db = await connection()
+
+        reservation = jsonable_encoder(data)
+
+        client = await db.usuarios.find_one({"nombre_usuario":user_name})
+
+        if not client:
+            return JSONResponse(status_code=404, content={"Message":"Data not found"})
+        
+        await db.reservasiones.update_one({"cliente.nombre_usuario":user_name}, {"$set":reservation})
+
+        return JSONResponse(status_code=200, content={"Message":"Reservation updated"})
         
     except:
         return JSONResponse(status_code=500, content={"Message":"Internal server error"})
@@ -217,7 +228,7 @@ async def get_all_hosters():
             if "hoster" in host:
                 hosts_data.append(host["hoster"])
         
-        return JSONResponse(status_code=302, content=hosts_data)
+        return JSONResponse(status_code=200, content=hosts_data)
                 
                 
     except:
