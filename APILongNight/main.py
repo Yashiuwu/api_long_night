@@ -131,7 +131,7 @@ async def get_client(user_name: str):
 
         cliente["_id"] = str(cliente["_id"])
 
-        return JSONResponse(status_code=302, content=cliente)
+        return JSONResponse(status_code=200, content=cliente)
 
     except:
         return JSONResponse(status_code=500, content={"Message": "Internal server error!"})
@@ -265,7 +265,7 @@ async def get_host_by_name(name: str):
         if not host:
             return JSONResponse(status_code=404, content={"Message":"Data not found"})
         
-        return JSONResponse(status_code=302, content=host)
+        return JSONResponse(status_code=200, content=host)
     except:
         return JSONResponse(status_code=500, content={"Message":"Internal server error!"})
 
