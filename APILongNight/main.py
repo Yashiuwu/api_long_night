@@ -111,7 +111,7 @@ async def get_all():
         for cliente in clientes:
             cliente["_id"] = str(cliente["_id"])
 
-            clients_data.append(cliente["cliente"])
+            clients_data.append(cliente)
 
         return JSONResponse(status_code=200, content=clients_data)
 
