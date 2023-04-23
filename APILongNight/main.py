@@ -5,7 +5,9 @@ from models.recursos.usuarios import usuarios
 from models.recursos.hosters import hosters
 from models.recursos.login import login as log
 from models.recover_request import recover_password_request
+from models.reserva_pagada import reserva_pagada
 from models.reserva import reserva
+from bson import ObjectId
 import jwt 
 import motor.motor_asyncio
 
@@ -192,19 +194,14 @@ async def post_reserva_client(user_name: str, reservasion: reserva):
     except:
         return JSONResponse(status_code=500, content={"Message": "Internal server error!"})
 
-@app.delete('cliente/{user_name}/reserva/edit')
-async def edit_client_reservation(user_name: str, data:reserva):
+@app.put('cliente/reserva/{id_r}/edit')
+async def edit_client_reservation(id_r: str, data:reserva):
     try:
         db = await connection()
 
         reservation = jsonable_encoder(data)
-
-        client = await db.usuarios.find_one({"nombre_usuario":user_name})
-
-        if not client:
-            return JSONResponse(status_code=404, content={"Message":"Data not found"})
         
-        await db.reservasiones.update_one({"cliente.nombre_usuario":user_name}, {"$set":reservation})
+        await db.reservasiones.update_one({"_id":ObjectId(id_r)}, {"$set":reservation})
 
         return JSONResponse(status_code=200, content={"Message":"Reservation updated"})
         
@@ -280,7 +277,7 @@ async def put_host_data(user_name: str, data: hosters):
         
         datos = jsonable_encoder(data)
         await db.usuario.update_one({"nombre_usuario":user_name}, {"$set":datos})
-        return JSONResponse(status_code=200, content={"Message":"Host Update"}), {"Data": datos}
+        return JSONResponse(status_code=200, content={"Message":"Host Update"})
     
     except:
         return JSONResponse(status_code=500, content={"Message":"Internal server error!"})
@@ -297,5 +294,176 @@ async def post_recover_password_requests(data: recover_password_request):
 
     except:
         return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+    
+@app.get('/reservation/{id_r}')
+async def get_reservation(id_r: str):
+    try:
+        db = await connection()
+        query = {"_id":ObjectId(id_r)}
+
+        data = await db.reservasiones.find_one(query)
+
+        data["_id"] = str(data["_id"])
+        return JSONResponse(status_code=200, content={"Data":data})
+    
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+
+@app.get('/get/all/reservations')
+async def get_all_reservations():
+    try:
+
+        db = await connection()
+
+        data = await db.reservasiones.find().to_list(1000)
+
+        for d in data:
+            d["_id"] = str(d["_id"])
+
+        return JSONResponse(status_code=200, content={"Data":data})
+    
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+    
+@app.get('/client/reservations/{user_name}')
+async def get_my_reservations(user_name: str):
+    try: 
+        query = {
+            "cliente.nombre_usuario":user_name
+        }
+
+        db = await connection()
+        data = await db.reservasiones.find(query).to_list(1000)
+
+        for d in data:
+            d["_id"] = str(d["_id"])
+
+        return JSONResponse(status_code=200, content={"Data":data})
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+
+@app.get('/host/reservations/{local_name}')
+async def get_my_host_reservations(local_name: str):
+    try:
+        db = await connection()
+
+        query = {
+            "local.nombre":local_name
+        }
+
+        data = await db.reservasiones.find(query).to_list(1000)
+
+        for d in data:
+            d["_id"] = str(d["_id"])
+        
+        return JSONResponse(status_code=200, content={"Data":data})
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+
 
     
+@app.post('/pay/rservation/{id_r}')
+async def pay_reservation(id_r: str, data: reserva_pagada):
+    try:
+        db = await connection()
+
+        reservation = await db.reservasiones.find_one({"_id":ObjectId(id_r)})
+
+        if not reservation:
+            return JSONResponse(status_code=404, content={"Error":"Data not found"})
+        
+        bouncher = jsonable_encoder(data)
+
+        await db.paid_reservations.insert_one(bouncher)
+
+        return JSONResponse(status_code=201, content={"Message":"Data created"})
+    
+    except Exception as err:
+        return JSONResponse(status_code=500, content={"Internal server error":err})
+    
+@app.delete('/delete/reservation/{id_r}')
+async def delete_reservation(id_r: str):
+    try:
+
+        db = await connection()
+        query = {"_id":ObjectId(id_r)}
+
+        data = await db.reservasiones.find_one(query)
+
+        if not data:
+            return JSONResponse(status_code=404, content={"Message":"Data not found"})
+        
+        await db.reservasiones.delete_one(query)
+
+        return JSONResponse(status_code=200, content={"Message":"Reservation deleted"})
+    
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+    
+@app.get('/paid/reservations')
+async def get_paid_reservations():
+    try:
+        db = await connection()
+
+        data = await db.paid_reservations.find().to_list(1000)
+
+        for d in data:
+            d["_id"] = str(d["_id"])
+
+        return JSONResponse(status_code=200, content={"Daata":data})
+    
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+
+@app.get('/paid/reservation/{id_p_r}')
+async def get_paid_reservation(id_p_r: str):
+    try:
+        db = await connection()
+        query = {"_id":ObjectId(id_p_r)}
+
+        data = await db.paid_reservations.find_one(query)
+
+
+        if not data:
+            return JSONResponse(status_code=404, content={"Message":"Data not found"})
+        
+        data["_id"] = str(data["_id"])  
+        return JSONResponse(status_code=200, content={"Data":data})
+    
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
+
+@app.delete('/delete/paid/reservation/{id_r}')
+async def delete_paid_reservation(id_r: str):
+    try:
+        db = await connection()
+        query = {"_id":ObjectId(id_r)}
+
+        data = await db.paid_reservations.find_one(query)
+
+        if not data:
+            return JSONResponse(status_code=404, content={"Message":"Data not found"})
+        
+        await db.paid_reservations.delete_one(query)
+        return JSONResponse(status_code=200, content={"Message":"Data deleted"})
+    
+    except Exception as err:
+        return JSONResponse(status_code=500, content={"Message":err})
+
+@app.put('/paid/reservation/edit/{id_r}')
+async def edit_paid_reservation(id_r: str, data: reserva_pagada):
+    try:
+        db = await connection()
+        query = {"_id":ObjectId(id_r)}
+
+        data = await db.paid_reservations.find_one(query)
+        action = {"$set":data}
+
+        if not data:
+            return JSONResponse(status_code=404, content={"Message":"data not found"})
+        
+        await db.paid_reservations.update_one(query, action)
+        return JSONResponse(status_code=200, content={"Message":"reservation updated"})
+    
+    except:
+        return JSONResponse(status_code=500, content={"Message":"Internal server error"})
